@@ -3,3 +3,6 @@ dist/
 .astro/
 .env
 .DS_Store
+
+# Personal resumes: kept local, never committed
+assets/*.pdf
