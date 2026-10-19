@@ -1,0 +1,117 @@
+/* Design tokens. Every color, space and radius used on the site lives here. */
+
+:root {
+  /* Type */
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'Cascadia Code', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --text-hero: clamp(2rem, 1.4rem + 3vw, 3.5rem);
+
+  --leading-tight: 1.15;
+  --leading-normal: 1.6;
+
+  /* Spacing (4px base) */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+
+  /* Radii */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* Layout */
+  --max-width: 1100px;
+  --gutter: var(--space-4);
+  --nav-height: 64px;
+
+  /* Motion */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --duration-fast: 150ms;
+  --duration: 400ms;
+  --lift: -3px;
+
+  /* Dark palette (default) */
+  --color-bg: #0b0d0e;
+  --color-surface: #121517;
+  --color-surface-2: #181c1f;
+  --color-border: #24292d;
+  --color-border-strong: #343b40;
+  --color-text: #e8ecee;
+  --color-text-muted: #9aa4aa;
+  --color-accent: #2dd4bf;
+  --color-accent-strong: #5eead4;
+  --color-accent-soft: rgb(45 212 191 / 0.12);
+  --color-on-accent: #04201c;
+  --color-focus: #5eead4;
+  --color-backdrop: rgb(0 0 0 / 0.7);
+  --shadow-lift: 0 10px 30px rgb(0 0 0 / 0.45);
+
+  color-scheme: dark;
+}
+
+/* Light palette: OS preference when no saved choice, or explicit choice. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --color-bg: #f7f8f8;
+    --color-surface: #ffffff;
+    --color-surface-2: #eef1f2;
+    --color-border: #dde2e4;
+    --color-border-strong: #c3cacd;
+    --color-text: #101415;
+    --color-text-muted: #525c61;
+    --color-accent: #0f766e;
+    --color-accent-strong: #0d5f59;
+    --color-accent-soft: rgb(15 118 110 / 0.1);
+    --color-on-accent: #ffffff;
+    --color-focus: #0f766e;
+    --color-backdrop: rgb(16 20 21 / 0.5);
+    --shadow-lift: 0 10px 30px rgb(16 20 21 / 0.12);
+    color-scheme: light;
+  }
+}
+
+:root[data-theme='light'] {
+  --color-bg: #f7f8f8;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef1f2;
+  --color-border: #dde2e4;
+  --color-border-strong: #c3cacd;
+  --color-text: #101415;
+  --color-text-muted: #525c61;
+  --color-accent: #0f766e;
+  --color-accent-strong: #0d5f59;
+  --color-accent-soft: rgb(15 118 110 / 0.1);
+  --color-on-accent: #ffffff;
+  --color-focus: #0f766e;
+  --color-backdrop: rgb(16 20 21 / 0.5);
+  --shadow-lift: 0 10px 30px rgb(16 20 21 / 0.12);
+  color-scheme: light;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --gutter: var(--space-5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration: 0ms;
+    --lift: 0px;
+  }
+}
