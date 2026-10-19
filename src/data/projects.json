@@ -1,0 +1,52 @@
+[
+  {
+    "id": "placeholder-1",
+    "title": "Featured project one",
+    "category": "Software",
+    "featured": true,
+    "outcome": "One-line outcome goes here.",
+    "tags": ["Tag", "Tag", "Tag"],
+    "repo": null,
+    "media": null
+  },
+  {
+    "id": "placeholder-2",
+    "title": "Featured project two",
+    "category": "Software",
+    "featured": true,
+    "outcome": "One-line outcome goes here.",
+    "tags": ["Tag", "Tag", "Tag"],
+    "repo": null,
+    "media": null
+  },
+  {
+    "id": "placeholder-3",
+    "title": "Project three",
+    "category": "Hardware",
+    "featured": false,
+    "outcome": "One-line outcome goes here.",
+    "tags": ["Tag", "Tag"],
+    "repo": null,
+    "media": null
+  },
+  {
+    "id": "placeholder-4",
+    "title": "Project four",
+    "category": "Software",
+    "featured": false,
+    "outcome": "One-line outcome goes here.",
+    "tags": ["Tag", "Tag"],
+    "repo": null,
+    "media": null
+  },
+  {
+    "id": "placeholder-5",
+    "title": "Project five",
+    "category": "Software",
+    "featured": false,
+    "outcome": "One-line outcome goes here.",
+    "tags": ["Tag", "Tag"],
+    "repo": null,
+    "media": null
+  }
+]
