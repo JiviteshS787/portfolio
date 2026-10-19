@@ -1,0 +1,113 @@
+---
+import Button from './Button.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  resumeUrl: string;
+}
+
+const { resumeUrl } = Astro.props;
+
+const links = [
+  { href: '#projects', label: 'Projects' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#skills', label: 'Skills' },
+  { href: '#contact', label: 'Contact' },
+];
+---
+
+<header class="nav">
+  <nav class="container nav__inner" aria-label="Primary">
+    <a href="#top" class="nav__brand mono">jivitesh.singh</a>
+    <ul class="nav__links" role="list">
+      {
+        links.map((link) => (
+          <li>
+            <a href={link.href}>{link.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+    <div class="nav__actions">
+      <ThemeToggle />
+      <Button href={resumeUrl} variant="primary" size="sm" download="Jivitesh-Singh-Resume.pdf">Resume</Button>
+    </div>
+  </nav>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--color-bg) 85%, transparent);
+    backdrop-filter: saturate(140%) blur(12px);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav__inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'brand actions'
+      'links links';
+    align-items: center;
+    column-gap: var(--space-4);
+    padding-block: var(--space-2);
+  }
+
+  .nav__brand {
+    grid-area: brand;
+    font-size: var(--text-sm);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .nav__links {
+    grid-area: links;
+    display: flex;
+    gap: var(--space-1);
+    padding: 0;
+    margin-inline: calc(var(--space-3) * -1);
+    list-style: none;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav__links a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding-inline: var(--space-3);
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease);
+  }
+
+  .nav__links a:hover {
+    color: var(--color-text);
+  }
+
+  .nav__actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  @media (min-width: 768px) {
+    .nav__inner {
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: 'brand links actions';
+      min-height: var(--nav-height);
+      padding-block: 0;
+    }
+
+    .nav__links {
+      justify-content: center;
+      margin-inline: 0;
+    }
+  }
+</style>

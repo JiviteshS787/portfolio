@@ -1,0 +1,113 @@
+---
+import Card from './Card.astro';
+import Media from './Media.astro';
+import Tag from './Tag.astro';
+
+interface Props {
+  project: {
+    id: string;
+    title: string;
+    category: string;
+    featured: boolean;
+    outcome: string;
+    tags: string[];
+    repo: string | null;
+    media: { src: string; type?: 'image' | 'video'; alt: string } | null;
+  };
+}
+
+const { project } = Astro.props;
+---
+
+<Card
+  as="li"
+  interactive
+  class:list={['project', { 'project--featured': project.featured }]}
+  data-category={project.category}
+  data-reveal
+>
+  <Media src={project.media?.src} type={project.media?.type} alt={project.media?.alt} />
+  <div class="project__body">
+    <p class="project__category mono">{project.category}</p>
+    <h3 class="project__title">{project.title}</h3>
+    <p class="project__outcome muted">{project.outcome}</p>
+  </div>
+  <ul class="project__tags" role="list" aria-label="Tech stack">
+    {
+      project.tags.map((tag) => (
+        <li>
+          <Tag>{tag}</Tag>
+        </li>
+      ))
+    }
+  </ul>
+  <div class="project__footer">
+    <span class="project__more mono">Details →</span>
+    {
+      project.repo && (
+        <a class="project__repo mono" href={`https://github.com/${project.repo}`} target="_blank" rel="noopener noreferrer">
+          Repo ↗<span class="visually-hidden"> for {project.title} (opens in a new tab)</span>
+        </a>
+      )
+    }
+  </div>
+</Card>
+
+<style>
+  .project__body {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .project__category {
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .project__title {
+    font-size: var(--text-lg);
+  }
+
+  .project--featured .project__title {
+    font-size: var(--text-xl);
+  }
+
+  .project__outcome {
+    font-size: var(--text-sm);
+  }
+
+  .project__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    padding: 0;
+    list-style: none;
+  }
+
+  .project__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: auto;
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    font-size: var(--text-xs);
+  }
+
+  .project__more {
+    color: var(--color-text-muted);
+  }
+
+  .project__repo {
+    position: relative;
+    z-index: 1;
+    color: var(--color-accent);
+    text-decoration: none;
+  }
+
+  .project__repo:hover {
+    text-decoration: underline;
+  }
+</style>
