@@ -23,21 +23,62 @@ const ordered = [...projects].sort((a, b) => Number(b.featured) - Number(a.featu
 const filters = ['All', 'Software', 'Hardware'];
 const reposTab = `${links.github}?tab=repositories`;
 
-// Placeholders until step 3 fills real content from the resume.
+// Source of truth: assets/resume.pdf.
 const experience = [
-  { role: 'Role title', org: 'Organization', dates: 'Dates', points: ['Bullet point one.', 'Bullet point two.'] },
-  { role: 'Degree', org: 'School', dates: 'Dates', points: ['Detail line.'] },
+  {
+    role: 'Tennis Coach (Summer Camp)',
+    org: 'Tennis Clubs of Canada · Richmond Hill, ON',
+    dates: 'Summers 2022 – 2025',
+    points: [
+      'Coached groups of 8 players aged 12–14 across four summers, building teamwork, discipline, and physical fitness.',
+      'Refined technique of pre-rep (competitive-track) players to prepare them for varied on-court scenarios.',
+    ],
+  },
+  {
+    role: 'BASc in Computer Engineering (Co-op)',
+    org: 'University of Ottawa · Ottawa, ON',
+    dates: 'Sep. 2024 – Expected May 2029',
+    points: [
+      'GPA: 3.44/4.0. Dean’s Honour List (Fall 2024, Fall 2025); Admission Scholarship for Academic Excellence ($2,000).',
+      'Relevant coursework: Data Structures & Algorithms, Intro to Software Engineering, Computer Architecture, Digital Systems, Circuit Analysis.',
+    ],
+  },
 ];
-const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', 'Hardware', 'Concepts'];
+const skillGroups = [
+  { name: 'Languages', items: ['Python', 'Java', 'JavaScript', 'C++', 'MATLAB', 'Assembly'] },
+  { name: 'Frameworks & Libraries', items: ['React', 'FastAPI', 'Android', 'OpenCV', 'MediaPipe', 'Panda3D', 'Firebase'] },
+  { name: 'Developer Tools', items: ['Git', 'GitHub', 'VS Code', 'Android Studio', 'Eclipse'] },
+  {
+    name: 'Hardware',
+    items: ['Logisim', 'Fritzing', 'Circuit analysis', 'Breadboard prototyping', 'PCB etching & soldering', 'Lab test equipment'],
+  },
+  {
+    name: 'Concepts',
+    items: [
+      'Data Structures & Algorithms',
+      'OOP',
+      'Design Patterns',
+      'REST APIs',
+      'LLM Prompt Engineering',
+      'UML',
+      'Microsoft Copilot Studio',
+      'Power Platform',
+    ],
+  },
+];
+const description =
+  'Jivitesh Singh, Computer Engineering (Co-op) student at the University of Ottawa, building software and hardware people can talk to, gesture at, and hold.';
 ---
 
-<Base title="Jivitesh Singh · Portfolio" description="Portfolio placeholder description.">
+<Base title="Jivitesh Singh · Computer Engineering Portfolio" description={description}>
   <Nav slot="header" resumeUrl={resumeUrl} />
 
   <section class="hero container" aria-labelledby="hero-title">
-    <p class="hero__eyebrow mono" data-reveal>Hero eyebrow</p>
-    <h1 id="hero-title" class="hero__title" data-reveal>Hero headline placeholder: one sentence about what you build.</h1>
-    <p class="hero__lede muted" data-reveal>Supporting line placeholder.</p>
+    <p class="hero__eyebrow mono" data-reveal>Jivitesh Singh · Computer Engineering (Co-op) · uOttawa</p>
+    <h1 id="hero-title" class="hero__title" data-reveal>
+      Computer engineering student building software and hardware people can talk to, gesture at, and hold.
+    </h1>
+    <p class="hero__lede muted" data-reveal>Looking for software and electrical/computer engineering roles.</p>
     <div class="hero__actions" data-reveal>
       <Button href={resumeUrl} variant="primary" download="Jivitesh-Singh-Resume.pdf">Resume</Button>
       <Button href={links.github} external>GitHub</Button>
@@ -46,7 +87,7 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
     </div>
   </section>
 
-  <Section id="projects" eyebrow="01 / Projects" title="Projects heading">
+  <Section id="projects" eyebrow="01 / Projects" title="Things I’ve built">
     <div class="filters" role="group" aria-label="Filter projects" data-reveal>
       {
         filters.map((f, i) => (
@@ -75,7 +116,7 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
     </p>
   </Section>
 
-  <Section id="experience" eyebrow="02 / Experience" title="Experience heading">
+  <Section id="experience" eyebrow="02 / Experience" title="Experience & education">
     <ol class="timeline" role="list">
       {
         experience.map((item) => (
@@ -96,14 +137,14 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
     </ol>
   </Section>
 
-  <Section id="skills" eyebrow="03 / Skills" title="Skills heading">
+  <Section id="skills" eyebrow="03 / Skills" title="Technical skills">
     <div class="skills">
       {
         skillGroups.map((group) => (
           <Card data-reveal>
-            <h3 class="skills__title mono">{group}</h3>
+            <h3 class="skills__title mono">{group.name}</h3>
             <ul class="skills__chips" role="list">
-              {['Skill', 'Skill', 'Skill', 'Skill'].map((s) => (
+              {group.items.map((s) => (
                 <li>
                   <Tag>{s}</Tag>
                 </li>
@@ -115,9 +156,9 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
     </div>
   </Section>
 
-  <Section id="contact" eyebrow="04 / Contact" title="Contact heading">
+  <Section id="contact" eyebrow="04 / Contact" title="Get in touch">
     <Card class="contact" data-reveal>
-      <p class="muted">Contact blurb placeholder.</p>
+      <p class="muted">Open to software and electrical/computer engineering roles. Email is the best way to reach me.</p>
       <div class="contact__actions">
         <Button href={links.email} variant="primary">Email</Button>
         <Button href={links.linkedin} external>LinkedIn</Button>
@@ -161,7 +202,7 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
   }
 
   .hero__title {
-    max-width: 20ch;
+    max-width: 24ch;
     font-size: var(--text-hero);
     font-weight: 700;
   }
