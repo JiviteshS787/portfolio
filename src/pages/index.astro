@@ -10,8 +10,7 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 import Modal from '../components/Modal.astro';
 import data from '../data/projects.json';
 import type { Project } from '../data/types';
-// Public download has no phone number; assets/resume.pdf stays the source of truth for facts.
-import resumeUrl from '../../assets/resume_noNumber.pdf?url';
+import { RESUME_URL } from '../config';
 
 const links = {
   github: 'https://github.com/JiviteshS787',
@@ -72,7 +71,7 @@ const description =
 ---
 
 <Base title="Jivitesh Singh · Computer Engineering Portfolio" description={description}>
-  <Nav slot="header" resumeUrl={resumeUrl} />
+  <Nav slot="header" />
 
   <section class="hero container" aria-labelledby="hero-title">
     <p class="hero__eyebrow mono" data-reveal>Jivitesh Singh · Computer Engineering (Co-op) · uOttawa</p>
@@ -81,7 +80,13 @@ const description =
     </h1>
     <p class="hero__lede muted" data-reveal>Looking for Software and Electrical/Computer Engineering roles.</p>
     <div class="hero__actions" data-reveal>
-      <Button href={resumeUrl} variant="primary" download="Jivitesh-Singh-Resume.pdf">Resume</Button>
+      {
+        RESUME_URL && (
+          <Button href={RESUME_URL} variant="primary" external>
+            Resume
+          </Button>
+        )
+      }
       <Button href={links.github} external>GitHub</Button>
       <Button href={links.linkedin} external>LinkedIn</Button>
       <Button href={links.email}>Email</Button>

@@ -1,12 +1,7 @@
 ---
 import Button from './Button.astro';
 import ThemeToggle from './ThemeToggle.astro';
-
-interface Props {
-  resumeUrl: string;
-}
-
-const { resumeUrl } = Astro.props;
+import { RESUME_URL } from '../config';
 
 const links = [
   { href: '#projects', label: 'Projects' },
@@ -30,7 +25,13 @@ const links = [
     </ul>
     <div class="nav__actions">
       <ThemeToggle />
-      <Button href={resumeUrl} variant="primary" size="sm" download="Jivitesh-Singh-Resume.pdf">Resume</Button>
+      {
+        RESUME_URL && (
+          <Button href={RESUME_URL} variant="primary" size="sm" external>
+            Resume
+          </Button>
+        )
+      }
     </div>
   </nav>
 </header>
