@@ -359,6 +359,8 @@ const description =
 </style>
 
 <script>
+  import { startVideos } from '../scripts/media';
+
   const cards = [...document.querySelectorAll<HTMLElement>('[data-project]')];
   const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
   const status = document.querySelector<HTMLElement>('[data-filter-status]');
@@ -383,16 +385,23 @@ const description =
 
   const visibleIds = () => cards.filter((c) => !c.hidden).map((c) => c.dataset.project!);
 
-  // Modal
+  // Modal. The browser returns focus to whatever was focused when showModal() ran, so when
+  // switching projects we close, focus the new project's card, and reopen in the same task.
+  // On final close, focus then lands on the card for the project being viewed.
   function show(id: string) {
     const template = document.querySelector<HTMLTemplateElement>(`template[data-project-detail="${id}"]`);
     if (!template) return;
+    if (dialog.open && id !== currentId) {
+      dialog.close();
+      document.querySelector<HTMLButtonElement>(`[data-open-project="${id}"]`)?.focus();
+    }
     currentId = id;
     body.replaceChildren(template.content.cloneNode(true));
+    startVideos(body);
     const ids = visibleIds();
     count.textContent = `${ids.indexOf(id) + 1} / ${ids.length}`;
-    dialog.scrollTop = 0;
     if (!dialog.open) dialog.showModal();
+    dialog.scrollTop = 0;
   }
 
   function step(delta: number) {
@@ -422,9 +431,7 @@ const description =
   // `close` fires async, so skip it if the modal was already reopened.
   dialog.addEventListener('close', () => {
     if (dialog.open) return;
-    const button = document.querySelector<HTMLButtonElement>(`[data-open-project="${currentId}"]`);
     body.replaceChildren();
     currentId = null;
-    button?.focus();
   });
 </script>

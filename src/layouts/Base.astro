@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import interLatin from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
 
 interface Props {
   title: string;
@@ -7,7 +8,9 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(`${base}og.png`, Astro.site);
 ---
 
 <!doctype html>
@@ -17,10 +20,27 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="author" content="Jivitesh Singh" />
     <link rel="canonical" href={canonical} />
     <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#0b0d0e" />
-    <link rel="icon" type="image/svg+xml" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <meta name="theme-color" content="#0b0d0e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f7f8f8" media="(prefers-color-scheme: light)" />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Jivitesh Singh" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Jivitesh Singh, Computer Engineering portfolio" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     <script is:inline>
       (function () {
         var root = document.documentElement;
@@ -42,6 +62,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </main>
     <slot name="footer" />
     <script>
+      import { startVideos } from '../scripts/media';
+
+      startVideos();
+
       const targets = document.querySelectorAll('[data-reveal]');
       const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

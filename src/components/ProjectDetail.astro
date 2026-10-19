@@ -20,7 +20,7 @@ const { project } = Astro.props;
   </header>
 
   <div class:list={['detail__media', { 'detail__media--grid': project.media.length > 1 }]}>
-    {project.media.map((m) => <Media src={m.src ?? undefined} type={m.type} alt={m.alt} label={m.label} />)}
+    {project.media.map((m) => <Media src={m.src ?? undefined} type={m.type} alt={m.alt || `${project.title}: ${m.label}`} label={m.label} />)}
   </div>
 
   <dl class="detail__facts">
