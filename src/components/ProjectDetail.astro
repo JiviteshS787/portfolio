@@ -1,0 +1,142 @@
+---
+// Modal body for one project, rendered into a <template> and cloned in by the page script.
+import Button from './Button.astro';
+import Media from './Media.astro';
+import Tag from './Tag.astro';
+import type { Project } from '../data/types';
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<template data-project-detail={project.id}>
+  <header class="detail__header">
+    <p class="detail__meta mono">{project.category} · {project.date}</p>
+    <h2 id="project-modal-title" class="detail__title">{project.title}</h2>
+    <p class="muted">{project.outcome}</p>
+  </header>
+
+  <div class:list={['detail__media', { 'detail__media--grid': project.media.length > 1 }]}>
+    {project.media.map((m) => <Media src={m.src ?? undefined} type={m.type} alt={m.alt} label={m.label} />)}
+  </div>
+
+  <dl class="detail__facts">
+    {
+      project.problem && (
+        <div>
+          <dt class="mono">Problem</dt>
+          <dd>{project.problem}</dd>
+        </div>
+      )
+    }
+    <div>
+      <dt class="mono">What I built</dt>
+      <dd>
+        <ul>
+          {project.built.map((b) => <li>{b}</li>)}
+        </ul>
+      </dd>
+    </div>
+    {
+      project.role && (
+        <div>
+          <dt class="mono">My role</dt>
+          <dd>{project.role}</dd>
+        </div>
+      )
+    }
+    {
+      project.result && (
+        <div>
+          <dt class="mono">Result</dt>
+          <dd>{project.result}</dd>
+        </div>
+      )
+    }
+    <div>
+      <dt class="mono">Stack</dt>
+      <dd>
+        <ul class="detail__stack" role="list">
+          {project.stack.map((s) => (
+            <li>
+              <Tag>{s}</Tag>
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </div>
+  </dl>
+
+  {
+    project.repo && (
+      <div class="detail__links">
+        <Button href={`https://github.com/${project.repo}`} variant="primary" external>
+          View repo on GitHub
+        </Button>
+      </div>
+    )
+  }
+</template>
+
+<style>
+  .detail__header {
+    display: grid;
+    gap: var(--space-2);
+    padding-right: var(--space-7);
+  }
+
+  .detail__meta {
+    color: var(--color-accent);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .detail__title {
+    font-size: var(--text-2xl);
+  }
+
+  .detail__media--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+    gap: var(--space-3);
+  }
+
+  .detail__facts {
+    display: grid;
+    gap: var(--space-5);
+  }
+
+  dt {
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+  }
+
+  dd ul:not([role]) {
+    display: grid;
+    gap: var(--space-2);
+    padding-left: var(--space-5);
+  }
+
+  .detail__stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .detail__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>

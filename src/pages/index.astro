@@ -6,8 +6,10 @@ import Button from '../components/Button.astro';
 import Card from '../components/Card.astro';
 import Tag from '../components/Tag.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import ProjectDetail from '../components/ProjectDetail.astro';
 import Modal from '../components/Modal.astro';
-import projects from '../data/projects.json';
+import data from '../data/projects.json';
+import type { Project } from '../data/types';
 import resumeUrl from '../../assets/resume.pdf?url';
 
 const links = {
@@ -16,8 +18,10 @@ const links = {
   email: 'mailto:jivitesh.singh@outlook.com',
 };
 
+const projects = data.projects as Project[];
 const ordered = [...projects].sort((a, b) => Number(b.featured) - Number(a.featured));
 const filters = ['All', 'Software', 'Hardware'];
+const reposTab = `${links.github}?tab=repositories`;
 
 // Placeholders until step 3 fills real content from the resume.
 const experience = [
@@ -44,12 +48,31 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
 
   <Section id="projects" eyebrow="01 / Projects" title="Projects heading">
     <div class="filters" role="group" aria-label="Filter projects" data-reveal>
-      {filters.map((f, i) => <Tag pressed={i === 0}>{f}</Tag>)}
+      {
+        filters.map((f, i) => (
+          <Tag pressed={i === 0} data-filter={f}>
+            {f}
+          </Tag>
+        ))
+      }
     </div>
+    <p class="visually-hidden" aria-live="polite" data-filter-status></p>
     <ul class="projects" role="list">
       {ordered.map((project) => <ProjectCard project={project} />)}
     </ul>
-    <p class="more muted mono" data-reveal>More on GitHub: placeholder, placeholder</p>
+    <p class="more muted mono" data-reveal>
+      More on GitHub:{' '}
+      {
+        data.moreOnGitHub.map((item, i) => (
+          <>
+            {i > 0 && ', '}
+            <a href={item.repo ? `https://github.com/${item.repo}` : reposTab} target="_blank" rel="noopener noreferrer">
+              {item.title}
+            </a>
+          </>
+        ))
+      }
+    </p>
   </Section>
 
   <Section id="experience" eyebrow="02 / Experience" title="Experience heading">
@@ -107,8 +130,15 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
     <p class="muted mono">© {new Date().getFullYear()} Jivitesh Singh</p>
   </footer>
 
+  {ordered.map((project) => <ProjectDetail project={project} />)}
+
   <Modal id="project-modal" labelledby="project-modal-title">
-    <h2 id="project-modal-title">Project title</h2>
+    <div class="modal-body" data-modal-body></div>
+    <nav class="modal-nav" aria-label="Browse projects">
+      <Button size="sm" data-modal-step="-1">← Previous</Button>
+      <span class="modal-nav__count mono muted" data-modal-count></span>
+      <Button size="sm" data-modal-step="1">Next →</Button>
+    </nav>
   </Modal>
 </Base>
 
@@ -193,6 +223,34 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
     font-size: var(--text-sm);
   }
 
+  .more a {
+    color: var(--color-text);
+    text-underline-offset: 3px;
+  }
+
+  .more a:hover {
+    color: var(--color-accent);
+  }
+
+  .modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .modal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .modal-nav__count {
+    font-size: var(--text-xs);
+  }
+
   .timeline {
     display: grid;
     gap: var(--space-4);
@@ -258,3 +316,74 @@ const skillGroups = ['Languages', 'Frameworks & Libraries', 'Developer Tools', '
     font-size: var(--text-xs);
   }
 </style>
+
+<script>
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-project]')];
+  const chips = [...document.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const status = document.querySelector<HTMLElement>('[data-filter-status]');
+  const dialog = document.querySelector<HTMLDialogElement>('#project-modal')!;
+  const body = dialog.querySelector<HTMLElement>('[data-modal-body]')!;
+  const count = dialog.querySelector<HTMLElement>('[data-modal-count]')!;
+  let currentId: string | null = null;
+
+  // Filtering
+  chips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const filter = chip.dataset.filter;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c === chip)));
+      cards.forEach((card) => {
+        card.hidden = filter !== 'All' && card.dataset.category !== filter;
+        card.classList.add('is-visible');
+      });
+      const shown = visibleIds().length;
+      if (status) status.textContent = `Showing ${shown} ${filter === 'All' ? '' : `${filter.toLowerCase()} `}project${shown === 1 ? '' : 's'}`;
+    });
+  });
+
+  const visibleIds = () => cards.filter((c) => !c.hidden).map((c) => c.dataset.project!);
+
+  // Modal
+  function show(id: string) {
+    const template = document.querySelector<HTMLTemplateElement>(`template[data-project-detail="${id}"]`);
+    if (!template) return;
+    currentId = id;
+    body.replaceChildren(template.content.cloneNode(true));
+    const ids = visibleIds();
+    count.textContent = `${ids.indexOf(id) + 1} / ${ids.length}`;
+    dialog.scrollTop = 0;
+    if (!dialog.open) dialog.showModal();
+  }
+
+  function step(delta: number) {
+    const ids = visibleIds();
+    if (!currentId || ids.length < 2) return;
+    const next = ids[(ids.indexOf(currentId) + delta + ids.length) % ids.length];
+    show(next);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-open-project]').forEach((button) => {
+    button.addEventListener('click', () => show(button.dataset.openProject!));
+  });
+
+  dialog.querySelectorAll<HTMLButtonElement>('[data-modal-step]').forEach((button) => {
+    button.addEventListener('click', () => step(Number(button.dataset.modalStep)));
+  });
+
+  dialog.addEventListener('keydown', (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.key === 'ArrowRight') step(1);
+    else if (e.key === 'ArrowLeft') step(-1);
+    else return;
+    e.preventDefault();
+  });
+
+  // Return focus to the card that matches the project being viewed, which may differ from the one opened.
+  // `close` fires async, so skip it if the modal was already reopened.
+  dialog.addEventListener('close', () => {
+    if (dialog.open) return;
+    const button = document.querySelector<HTMLButtonElement>(`[data-open-project="${currentId}"]`);
+    body.replaceChildren();
+    currentId = null;
+    button?.focus();
+  });
+</script>

@@ -1,52 +1,104 @@
-[
-  {
-    "id": "placeholder-1",
-    "title": "Featured project one",
-    "category": "Software",
-    "featured": true,
-    "outcome": "One-line outcome goes here.",
-    "tags": ["Tag", "Tag", "Tag"],
-    "repo": null,
-    "media": null
-  },
-  {
-    "id": "placeholder-2",
-    "title": "Featured project two",
-    "category": "Software",
-    "featured": true,
-    "outcome": "One-line outcome goes here.",
-    "tags": ["Tag", "Tag", "Tag"],
-    "repo": null,
-    "media": null
-  },
-  {
-    "id": "placeholder-3",
-    "title": "Project three",
-    "category": "Hardware",
-    "featured": false,
-    "outcome": "One-line outcome goes here.",
-    "tags": ["Tag", "Tag"],
-    "repo": null,
-    "media": null
-  },
-  {
-    "id": "placeholder-4",
-    "title": "Project four",
-    "category": "Software",
-    "featured": false,
-    "outcome": "One-line outcome goes here.",
-    "tags": ["Tag", "Tag"],
-    "repo": null,
-    "media": null
-  },
-  {
-    "id": "placeholder-5",
-    "title": "Project five",
-    "category": "Software",
-    "featured": false,
-    "outcome": "One-line outcome goes here.",
-    "tags": ["Tag", "Tag"],
-    "repo": null,
-    "media": null
-  }
-]
+{
+  "projects": [
+    {
+      "id": "voice-assistant",
+      "title": "Voice-Controlled Desktop AI Assistant",
+      "category": "Software",
+      "featured": true,
+      "date": "Jul. 2026 – Present",
+      "outcome": "Turns natural, messy speech into validated JSON commands that drive 10+ desktop actions.",
+      "problem": "Voice control tends to break on natural, messy speech: compound requests, mid-sentence self-corrections, and context-dependent commands like “do that again.”",
+      "built": [
+        "Speech to structured JSON commands via an LLM, executing 10+ system actions: app, file and multi-monitor window control, volume, brightness, power and clipboard.",
+        "Handling for compound commands (“open X and then Y”) and self-corrections (“wait, no, actually…”), collapsed into the single intended action.",
+        "A validation layer that checks every LLM-generated command against known targets and typed parameter rules before execution, and resolves context-dependent commands from command history.",
+        "A React dashboard backed by FastAPI that tracks API usage, command history and quick-action macros."
+      ],
+      "role": null,
+      "result": "Reduced system prompt size by 55% (9.8K to 4.4K chars) while preserving command accuracy, lowering per-request token cost and latency.",
+      "stack": ["Python", "FastAPI", "React", "DeepSeek API", "LLMs"],
+      "repo": "JiviteshS787/AI-Project",
+      "media": [{ "label": "Demo video", "src": null, "type": "video", "alt": "" }]
+    },
+    {
+      "id": "hand-tracking",
+      "title": "Hand-Tracking 3D Controller",
+      "category": "Software",
+      "featured": true,
+      "date": "Jun. 2026",
+      "outcome": "Webcam hand gestures rotate, tilt and zoom a 3D model at sub-100 ms latency.",
+      "problem": "Controlling a 3D viewer in real time with bare hands and an ordinary webcam.",
+      "built": [
+        "Real-time recognition of pinch, open-palm and fist gestures from a webcam, driving model rotation, tilt and zoom.",
+        "Custom directional-movement calculations that map hand-landmark motion between frames to smooth 3D camera transformations."
+      ],
+      "role": null,
+      "result": "Gesture-driven rotation, tilt and zoom with sub-100 ms latency.",
+      "stack": ["Python", "OpenCV", "MediaPipe", "Panda3D"],
+      "repo": "JiviteshS787/HandTracking",
+      "media": [{ "label": "Gesture demo GIF", "src": null, "type": "image", "alt": "" }]
+    },
+    {
+      "id": "cpu-pcb",
+      "title": "8-Bit CPU & LED Dice PCB",
+      "category": "Hardware",
+      "featured": false,
+      "date": "Dec. 2023",
+      "outcome": "A simulated 8-bit CPU with a custom instruction set, plus a hand-etched LED dice PCB.",
+      "problem": null,
+      "built": [
+        "A clock-driven 8-bit CPU (ALU, registers, control unit) designed and simulated in Logisim with a custom instruction set.",
+        "A physical LED dice PCB, designed in Fritzing, then etched, soldered and validated."
+      ],
+      "role": null,
+      "result": "Verified correct CPU execution across the custom instruction set; debugged and validated the PCB with bench test equipment.",
+      "stack": ["Logisim", "Fritzing", "PCB fabrication"],
+      "repo": null,
+      "media": [
+        { "label": "Board photo", "src": null, "type": "image", "alt": "" },
+        { "label": "Logisim screenshot", "src": null, "type": "image", "alt": "" },
+        { "label": "Block diagram", "src": null, "type": "image", "alt": "" }
+      ]
+    },
+    {
+      "id": "otams",
+      "title": "OTAMS Tutor Scheduling App",
+      "category": "Software",
+      "featured": false,
+      "date": "Sep. 2025",
+      "outcome": "Android app for student–tutor scheduling with admin approval and no double-booking.",
+      "problem": "Students and tutors need to book sessions without conflicts, with admins approving accounts.",
+      "built": [
+        "An Android app for scheduling between students and tutors, with admin approval workflows.",
+        "Backend scheduling logic in Cloud Firestore that merges timeslots and prevents double-booking across concurrent bookings."
+      ],
+      "role": "One of a team of 5; built the backend scheduling logic in Cloud Firestore.",
+      "result": "Timeslots merge automatically and concurrent bookings can't double-book a tutor.",
+      "stack": ["Java", "Android Studio", "Firebase Cloud Firestore"],
+      "repo": null,
+      "media": [{ "label": "App screenshots", "src": null, "type": "image", "alt": "" }]
+    },
+    {
+      "id": "sorcerers-tower",
+      "title": "Sorcerer's Tower",
+      "category": "Software",
+      "featured": false,
+      "date": "Jan. 2024",
+      "outcome": "A 5-level Java rogue-lite with upgrades, varied enemy AI and a final boss.",
+      "problem": null,
+      "built": [
+        "Movement, aiming and customization systems for a 5-level game.",
+        "Progression-based upgrades, varied enemy AI, a final boss and rebindable controls."
+      ],
+      "role": null,
+      "result": "A complete 5-level rogue-lite built with object-oriented Java.",
+      "stack": ["Java", "OOP"],
+      "repo": "JiviteshS787/Sorcerers-Tower",
+      "media": [{ "label": "Gameplay GIF", "src": null, "type": "image", "alt": "" }]
+    }
+  ],
+  "moreOnGitHub": [
+    { "title": "Minesweeper", "repo": null },
+    { "title": "Tic-Tac-Toe", "repo": null }
+  ]
+}

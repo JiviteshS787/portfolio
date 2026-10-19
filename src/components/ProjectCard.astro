@@ -2,31 +2,25 @@
 import Card from './Card.astro';
 import Media from './Media.astro';
 import Tag from './Tag.astro';
+import type { Project } from '../data/types';
 
 interface Props {
-  project: {
-    id: string;
-    title: string;
-    category: string;
-    featured: boolean;
-    outcome: string;
-    tags: string[];
-    repo: string | null;
-    media: { src: string; type?: 'image' | 'video'; alt: string } | null;
-  };
+  project: Project;
 }
 
 const { project } = Astro.props;
+const cover = project.media[0];
 ---
 
 <Card
   as="li"
   interactive
   class:list={['project', { 'project--featured': project.featured }]}
+  data-project={project.id}
   data-category={project.category}
   data-reveal
 >
-  <Media src={project.media?.src} type={project.media?.type} alt={project.media?.alt} />
+  <Media src={cover?.src ?? undefined} type={cover?.type} alt={cover?.alt} label={cover?.label} />
   <div class="project__body">
     <p class="project__category mono">{project.category}</p>
     <h3 class="project__title">{project.title}</h3>
@@ -34,7 +28,7 @@ const { project } = Astro.props;
   </div>
   <ul class="project__tags" role="list" aria-label="Tech stack">
     {
-      project.tags.map((tag) => (
+      project.stack.map((tag) => (
         <li>
           <Tag>{tag}</Tag>
         </li>
@@ -42,7 +36,9 @@ const { project } = Astro.props;
     }
   </ul>
   <div class="project__footer">
-    <span class="project__more mono">Details →</span>
+    <button type="button" class="project__open mono" data-open-project={project.id} aria-haspopup="dialog">
+      Details →<span class="visually-hidden"> about {project.title}</span>
+    </button>
     {
       project.repo && (
         <a class="project__repo mono" href={`https://github.com/${project.repo}`} target="_blank" rel="noopener noreferrer">
@@ -54,6 +50,10 @@ const { project } = Astro.props;
 </Card>
 
 <style>
+  .project {
+    cursor: pointer;
+  }
+
   .project__body {
     display: grid;
     gap: var(--space-2);
@@ -82,8 +82,6 @@ const { project } = Astro.props;
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-2);
-    padding: 0;
-    list-style: none;
   }
 
   .project__footer {
@@ -96,13 +94,40 @@ const { project } = Astro.props;
     font-size: var(--text-xs);
   }
 
-  .project__more {
+  /* The Details button stretches over the whole card so any click opens the modal. */
+  .project__open {
+    padding: var(--space-1) 0;
+    border: 0;
+    background: none;
     color: var(--color-text-muted);
+    font-size: var(--text-xs);
+    cursor: pointer;
+  }
+
+  .project__open::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  .project__open:focus-visible {
+    outline: none;
+  }
+
+  .project:has(.project__open:focus-visible) {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+
+  .project:hover .project__open {
+    color: var(--color-accent);
   }
 
   .project__repo {
     position: relative;
     z-index: 1;
+    padding: var(--space-1) 0;
     color: var(--color-accent);
     text-decoration: none;
   }
