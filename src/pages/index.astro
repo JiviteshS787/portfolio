@@ -10,7 +10,8 @@ import ProjectDetail from '../components/ProjectDetail.astro';
 import Modal from '../components/Modal.astro';
 import data from '../data/projects.json';
 import type { Project } from '../data/types';
-import resumeUrl from '../../assets/resume.pdf?url';
+// Public download has no phone number; assets/resume.pdf stays the source of truth for facts.
+import resumeUrl from '../../assets/resume_noNumber.pdf?url';
 
 const links = {
   github: 'https://github.com/JiviteshS787',
